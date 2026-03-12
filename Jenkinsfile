@@ -25,27 +25,22 @@ pipeline {
 
                     if (isUnix()) {
 
-                        sh """
-                        docker pull ${MAVEN_IMAGE}
+                        sh "docker pull ${MAVEN_IMAGE}"
 
-                        docker run --rm \
-                        -v \$(pwd):/workspace \
+                        sh "docker run --rm \
+                        -v $(pwd):/workspace \
                         -w /workspace \
                         ${MAVEN_IMAGE} \
-                        mvn clean package -DskipTests
-                        """
+                        mvn clean package -DskipTests"
 
                     } else {
 
-                        bat """
-                        docker pull %MAVEN_IMAGE%
-
-                        docker run --rm ^
+                        bat "docker pull %MAVEN_IMAGE%"
+                        bat "docker run --rm ^
                         -v %cd%:/workspace ^
                         -w /workspace ^
                         %MAVEN_IMAGE% ^
-                        mvn clean package -DskipTests
-                        """
+                        mvn clean package -DskipTests"
                     }
                 }
             }
@@ -59,17 +54,13 @@ pipeline {
 
                     if (isUnix()) {
 
-                        sh """
-                        docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
-                        docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${IMAGE_NAME}:latest
-                        """
+                        sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+                        sh "docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${IMAGE_NAME}:latest"
 
                     } else {
 
-                        bat """
-                        docker build -t %IMAGE_NAME%:%IMAGE_TAG% .
-                        docker tag %IMAGE_NAME%:%IMAGE_TAG% %IMAGE_NAME%:latest
-                        """
+                        bat "docker build -t %IMAGE_NAME%:%IMAGE_TAG% ."
+                        bat "docker tag %IMAGE_NAME%:%IMAGE_TAG% %IMAGE_NAME%:latest"
                     }
                 }
             }
@@ -90,21 +81,18 @@ pipeline {
 
                         if (isUnix()) {
 
-                            sh """
-                            echo ${DOCKER_PASS} | docker login -u ${DOCKER_USER} --password-stdin
-                            docker push ${IMAGE_NAME}:${IMAGE_TAG}
-                            docker push ${IMAGE_NAME}:latest
-                            docker logout
-                            """
+                            sh "echo ${DOCKER_PASS} | docker login -u ${DOCKER_USER} --password-stdin"
+                            sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
+                            sh "docker push ${IMAGE_NAME}:latest"
+                            sh "docker logout"
 
                         } else {
 
-                            bat """
-                            echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
-                            docker push %IMAGE_NAME%:%IMAGE_TAG%
-                            docker push %IMAGE_NAME%:latest
-                            docker logout
-                            """
+                            bat "echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin"
+                            bat "docker push %IMAGE_NAME%:%IMAGE_TAG%"
+                            bat "docker push %IMAGE_NAME%:latest"
+                            bat "docker logout"
+                            
                         }
                     }
                 }
@@ -120,7 +108,7 @@ pipeline {
                     if (isUnix()) {
                         sh "docker rmi ${MAVEN_IMAGE} || true"
                     } else {
-                        bat "docker rmi %MAVEN_IMAGE%"
+                        bat "docker rmi %MAVEN_IMAGE% || exit 0"
                     }
 
                 }
@@ -136,15 +124,13 @@ post {
 
         script {
             if (isUnix()) {
-                sh """
-                docker rmi ${IMAGE_NAME}:${IMAGE_TAG} || true
-                docker rmi ${IMAGE_NAME}:latest || true
-                """
+                sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG} || true"
+                sh "docker rmi ${IMAGE_NAME}:latest || true"
+                
             } else {
-                bat """
-                docker rmi %IMAGE_NAME%:%IMAGE_TAG% || exit 0
-                docker rmi %IMAGE_NAME%:latest || exit 0
-                """
+                bat "docker rmi %IMAGE_NAME%:%IMAGE_TAG% || exit 0"
+                bat "docker rmi %IMAGE_NAME%:latest || exit 0"
+            
             }
         }
     }
