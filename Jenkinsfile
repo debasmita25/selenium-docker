@@ -4,7 +4,7 @@ pipeline {
 
     environment {
         MAVEN_IMAGE = "maven:3.9.9-eclipse-temurin-17"
-        IMAGE_NAME  = "debasmita25/selenium-tests"
+        IMAGE_NAME  = "debasmit_25/selenium-tests"
         IMAGE_TAG   = "${BUILD_NUMBER}"
     }
 
@@ -17,6 +17,7 @@ pipeline {
         }
 
         stage('Build Maven Package in Docker') {
+            echo "Build Maven Package in Docker"
             steps {
                 script {
 
@@ -49,6 +50,7 @@ pipeline {
         }
 
         stage('Build Test Image') {
+            echo "Build Test Image"
             steps {
                 script {
 
@@ -71,6 +73,8 @@ pipeline {
         }
 
         stage('Push Image') {
+
+            echo "Push Image"
             steps {
                 withCredentials([usernamePassword(
                     credentialsId: 'dockerhub',
@@ -105,6 +109,8 @@ pipeline {
 
         stage('Cleanup Maven Image') {
             steps {
+
+                echo "Cleanup Maven Image"
                 script {
 
                     if (isUnix()) {
@@ -119,10 +125,43 @@ pipeline {
 
     }
 
-    post {
-        always {
-            echo "Pipeline completed"
+post {
+
+    always {
+        echo "Pipeline completed"
+
+        script {
+            if (isUnix()) {
+                sh """
+                docker rmi ${IMAGE_NAME}:${IMAGE_TAG} || true
+                docker rmi ${IMAGE_NAME}:latest || true
+                """
+            } else {
+                bat """
+                docker rmi %IMAGE_NAME%:%IMAGE_TAG% || exit 0
+                docker rmi %IMAGE_NAME%:latest || exit 0
+                """
+            }
         }
     }
+
+    failure {
+        echo "Pipeline failed - collecting debug info"
+
+        script {
+            if (isUnix()) {
+                sh "docker images"
+                sh "docker ps -a"
+                sh "ls -la"
+                sh "ls -la target"
+            } else {
+                bat "docker images"
+                bat "docker ps -a"
+                bat "dir"
+                bat "dir target"
+            }
+        }
+    }
+}
 
 }
