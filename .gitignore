@@ -1,0 +1,35 @@
+# Maven build output
+target/
+
+# Logs
+logs/
+*.log
+
+# Test reports
+test-output/
+surefire-reports/
+
+# Screenshots
+screenshots/
+*.png
+
+# Extent reports
+extent-report/
+extentReports/
+*.html
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# Environment files
+.env
