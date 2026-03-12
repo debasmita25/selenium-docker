@@ -12,6 +12,7 @@ COPY runner.sh .
 
 # Fix Windows line endings and permissions
 RUN dos2unix runner.sh && chmod +x runner.sh
+RUN chmod -R +x /home/selenium-docker
 
 # Run script
 ENTRYPOINT ["./runner.sh"]
