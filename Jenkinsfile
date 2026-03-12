@@ -27,20 +27,24 @@ pipeline {
 
                         sh "docker pull ${MAVEN_IMAGE}"
 
-                        sh "docker run --rm \
+                        sh """
+                        docker run --rm \
                         -v \$(pwd):/workspace \
                         -w /workspace \
                         ${MAVEN_IMAGE} \
-                        mvn clean package -DskipTests"
+                        mvn clean package -DskipTests
+                        """
 
                     } else {
 
                         bat "docker pull %MAVEN_IMAGE%"
-                        bat "docker run --rm ^
+                       bat """
+                        docker run --rm ^
                         -v %cd%:/workspace ^
                         -w /workspace ^
                         %MAVEN_IMAGE% ^
-                        mvn clean package -DskipTests"
+                        mvn clean package -DskipTests
+                        """
                     }
                 }
             }
