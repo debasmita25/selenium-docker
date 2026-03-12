@@ -103,41 +103,9 @@ pipeline {
             }
         }
 
-        stage('Cleanup Maven Image') {
-            steps {
-
-                echo "Cleanup Maven Image"
-                script {
-
-                    if (isUnix()) {
-                        sh "docker rmi ${MAVEN_IMAGE} || true"
-                    } else {
-                        bat "docker rmi %MAVEN_IMAGE% || exit 0"
-                    }
-
-                }
-            }
-        }
-
-    }
 
 post {
 
-    always {
-        echo "Pipeline completed"
-
-        script {
-            if (isUnix()) {
-                sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG} || true"
-                sh "docker rmi ${IMAGE_NAME}:latest || true"
-                
-            } else {
-                bat "docker rmi %IMAGE_NAME%:%IMAGE_TAG% || exit 0"
-                bat "docker rmi %IMAGE_NAME%:latest || exit 0"
-            
-            }
-        }
-    }
 
     failure {
         echo "Pipeline failed - collecting debug info"
@@ -153,6 +121,26 @@ post {
                 bat "docker ps -a"
                 bat "dir"
                 bat "dir target"
+            }
+        }
+    }
+
+    
+    always {
+        echo "Pipeline completed"
+        echo "Cleanup Maven Image"
+
+        script {
+            if (isUnix()) {
+                sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG} || true"
+                sh "docker rmi ${IMAGE_NAME}:latest || true"
+                sh "docker rmi ${MAVEN_IMAGE} || true"
+                
+            } else {
+                bat "docker rmi %IMAGE_NAME%:%IMAGE_TAG% || exit 0"
+                bat "docker rmi %IMAGE_NAME%:latest || exit 0"
+                bat "docker rmi %MAVEN_IMAGE% || exit 0"
+            
             }
         }
     }
