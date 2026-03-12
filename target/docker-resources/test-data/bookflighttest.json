@@ -1,0 +1,77 @@
+{
+	"validUser":
+	[{
+  "firstName": "michael",
+  "lastName": "jackson",
+  "email": "mj@pop.com",
+  "password": "mj",
+  "street": "123 main street",
+  "city": "atlanta",
+  "zip": "30001",
+  "state":"Hawaii",
+  "passengersCount": "1",
+  "departFrom":"Frankfurt",
+  "arriveIn":"Paris",
+  "serviceClass":"Business",
+  "expectedPrice": "$584 USD"
+},
+{
+  "firstName": "michael",
+  "lastName": "jackson",
+  "email": "mj@pop.com",
+  "password": "mj",
+  "street": "123 main street",
+  "city": "atlanta",
+  "zip": "30001",
+  "state":"Hawaii",
+  "passengersCount": "2",
+  "departFrom":"Frankfurt",
+  "arriveIn":"Portland",
+  "serviceClass":"Business",
+  "expectedPrice": "$1169 USD"
+},
+{
+  "firstName": "michael",
+  "lastName": "jackson",
+  "email": "mj@pop.com",
+  "password": "mj",
+  "street": "123 main street",
+  "city": "atlanta",
+  "zip": "30001",
+  "state":"Hawaii",
+  "passengersCount": "3",
+  "departFrom":"Frankfurt",
+  "arriveIn":"Paris",
+  "serviceClass":"Economy",
+  "expectedPrice": "$1753 USD"
+},
+{
+  "firstName": "michael",
+  "lastName": "jackson",
+  "email": "mj@pop.com",
+  "password": "mj",
+  "street": "123 main street",
+  "city": "atlanta",
+  "zip": "30001",
+  "state":"Hawaii",
+  "passengersCount": "4",
+  "departFrom":"Frankfurt",
+  "arriveIn":"Paris",
+  "serviceClass":"First",
+  "expectedPrice": "$2338 USD"
+}
+],
+"invalidUser":
+	[{
+  "firstName": "michael",
+  "lastName": "jackson",
+  "email": "mj@pop.com",
+  "password": "mj",
+  "street": "123 main street",
+  "city": "atlanta",
+  "zip": "30001",
+  "state":"Hawaii",
+  "passengersCount": "-1",
+  "expectedPrice": "$584 USD"
+}]
+}
