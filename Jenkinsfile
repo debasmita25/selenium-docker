@@ -12,13 +12,15 @@ pipeline {
 
         stage('Checkout') {
             steps {
+                echo "Checkout"
                 checkout scm
             }
         }
 
         stage('Build Maven Package in Docker') {
-            echo "Build Maven Package in Docker"
+            
             steps {
+                echo "Build Maven Package in Docker"
                 script {
 
                     if (isUnix()) {
@@ -50,8 +52,9 @@ pipeline {
         }
 
         stage('Build Test Image') {
-            echo "Build Test Image"
+            
             steps {
+                echo "Build Test Image"
                 script {
 
                     if (isUnix()) {
@@ -74,8 +77,9 @@ pipeline {
 
         stage('Push Image') {
 
-            echo "Push Image"
+            
             steps {
+                echo "Push Image"
                 withCredentials([usernamePassword(
                     credentialsId: 'dockerhub',
                     usernameVariable: 'DOCKER_USER',
