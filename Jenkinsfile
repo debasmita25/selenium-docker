@@ -4,7 +4,7 @@ pipeline {
 
     environment {
         MAVEN_IMAGE = "maven:3.9.9-eclipse-temurin-17"
-        IMAGE_NAME  = "debasmit_25/selenium-tests"
+        IMAGE_NAME  = "debasmita25/selenium-tests"
         IMAGE_TAG   = "${BUILD_NUMBER}"
     }
 
