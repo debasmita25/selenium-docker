@@ -28,7 +28,7 @@ pipeline {
                         sh "docker pull ${MAVEN_IMAGE}"
 
                         sh "docker run --rm \
-                        -v $(pwd):/workspace \
+                        -v \$(pwd):/workspace \
                         -w /workspace \
                         ${MAVEN_IMAGE} \
                         mvn clean package -DskipTests"
